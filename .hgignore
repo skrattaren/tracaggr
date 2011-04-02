@@ -1,0 +1,8 @@
+syntax:glob
+
+*.e?p
+*.pyc
+.eric?project/*
+.*.swp
+uwsgi.xml
+
