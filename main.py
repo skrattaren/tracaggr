@@ -57,7 +57,7 @@ def index():
     ''' Displays calendars and lists of open/recently closed tickets '''
     month_data = {}
     # prepare search string
-    todaystr = datetime.date.today().strftime("%%-%m-%Y")
+    todaystr = datetime.date.today().strftime("%%.%m.%Y")
     for trac in TRACS:
         # query Trac databases
         cur = trac['conn'].cursor(cursor_factory=DictCursor)
