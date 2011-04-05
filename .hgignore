@@ -2,7 +2,8 @@ syntax:glob
 
 *.e?p
 *.pyc
-.eric?project/*
+.*project
 .*.swp
 uwsgi.xml
+settings.py
 
