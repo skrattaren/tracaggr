@@ -10,11 +10,22 @@
 </head>
 
 <body>
-    <div>
-        {% for trac in data.keys() %}
-            {{ trac }}
+    <div id="contents">
+        {% for name, login in devs %}
+        <p><a href="#{{ login }}">{{ name }}</a></p>
         {% endfor %}
     </div>
+    {% for name, login in devs %}
+    <h3 id="{{ login }}">{{ name }}</h3>
+    <div class="cal">
+        {% for ticket in month_data.pop(login, []) %}
+        <p>{{ ticket.no }}</p>
+        {% endfor %}
+    </div>
+    <div class="tcktlist">
+        Lists of open / recently closed tickets
+    </div>
+    {% endfor %}
 </body>
 </html>
 {# vim: filetype=htmljinja
