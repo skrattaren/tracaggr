@@ -10,6 +10,13 @@
 </head>
 
 <body>
-    <div>Here be dragons</div>
+    <div>
+        {% for trac in data.keys() %}
+            {{ trac }}
+        {% endfor %}
+    </div>
 </body>
 </html>
+{# vim: filetype=htmljinja
+#}
+
