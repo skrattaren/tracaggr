@@ -26,7 +26,10 @@
             <td>
                 {{ day or '' }}<br />
                 {% for ticket in usertckts.pop(daystr, ()) %}
-                    <p>{{ ticket.trac }}: {{ ticket.id }}</p>
+                    <p>
+                    <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}">
+                            {{ ticket.trac }}#{{ ticket.id }}: {{ ticket.summary }}</a>
+                    </p>
                 {% endfor %}
             </td>
             {% endfor %}
