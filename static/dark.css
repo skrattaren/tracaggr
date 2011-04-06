@@ -16,3 +16,7 @@ table, th, td {
     border: 1px solid white;
 }
 
+p.closed a {
+    text-decoration: line-through;
+}
+

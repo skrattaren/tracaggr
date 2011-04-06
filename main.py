@@ -39,7 +39,7 @@ except ImportError:
 QUERY_OPEN = "SELECT id, owner FROM ticket WHERE status!='closed'"
 # query to fetch month data
 QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
-                        ticket_custom.value AS due_date
+                        ticket.status, ticket_custom.value AS due_date
                 FROM ticket INNER JOIN ticket_custom
                 ON ticket.id = ticket_custom.ticket
                 WHERE ticket_custom.name='due_date' AND
