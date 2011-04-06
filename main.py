@@ -14,6 +14,8 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
 from flask import Flask, render_template
 app = Flask('TracAggr')
 
+from utils import dictify
+
 # Trac databases
 TRAC_DATA = (
     {'name': 'Name_1', 'host': 'host1', 'port': 5432,
@@ -34,8 +36,7 @@ except ImportError:
 # query to fetch open tickets
 QUERY_OPEN = "SELECT id, owner FROM ticket WHERE status!='closed'"
 # query to fetch month data
-QUERY_MONTH = """SELECT ticket.id AS ticket,
-                ticket.owner, ticket_custom.value AS due_date
+QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket_custom.value AS due_date
                 FROM ticket INNER JOIN ticket_custom
                 ON ticket.id = ticket_custom.ticket
                 WHERE ticket_custom.name='due_date' AND
@@ -58,20 +59,14 @@ def index():
     month_data = {}
     # prepare search string
     todaystr = datetime.date.today().strftime("%%.%m.%Y")
+    month_data = {}
     for trac in TRACS:
         # query Trac databases
         cur = trac['conn'].cursor(cursor_factory=DictCursor)
         cur.execute(QUERY_MONTH, (todaystr, ))
-        for row in cur.fetchall():
-            # append row to one of per-owner lists
-            owners_list = month_data.get(row['owner'])
-            if owners_list is None:
-                month_data[row['owner']] = []
-            ticket_data = {'trac': trac['name'],
-                           'no': row['ticket'],
-                           'due_date': row['due_date']
-                           }
-            month_data[row['owner']].append(ticket_data)
+        month_data = dictify(cur.fetchall(), 'owner',
+                             dict2up=month_data,
+                             add_data={'trac': trac['name']})
     return render_template('index.html', month_data=month_data, devs=DEVS)
 
 if __name__ == "__main__":
