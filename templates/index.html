@@ -25,11 +25,14 @@
             {% set daystr = daytmpl % day %}
             <td>
                 {{ day or '' }}<br />
-                {% for ticket in usertckts.pop(daystr, ()) %}
+                {% for trac, tickets in usertckts.pop(daystr, {}).items() %}
+                    {{ trac }}
+                    {% for ticket in tickets %}
                     <p class="{{ ticket.status }}">
                     <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}">
-                            {{ ticket.trac }}#{{ ticket.id }}: {{ ticket.summary }}</a>
+                            #{{ ticket.id }}: {{ ticket.summary }}</a>
                     </p>
+                    {% endfor %}
                 {% endfor %}
             </td>
             {% endfor %}

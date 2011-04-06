@@ -76,6 +76,10 @@ def index():
                                        'base_url': trac['base_url']})
     for user, tickets in month_data_raw.items():
         month_data[user] = dictify(tickets, 'due_date')
+        for due_date in month_data[user].keys():
+            tickets = month_data[user].pop(due_date)
+            month_data[user][due_date] = dictify(tickets, 'trac')
+
     # create calendars
     month, year = (today.month, today.year)
     calendar.setfirstweekday(calendar.MONDAY)
