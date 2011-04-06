@@ -12,7 +12,7 @@ from psycopg2.extras import DictCursor
 psycopg2.extensions.register_type(UNICODE)
 psycopg2.extensions.register_type(UNICODEARRAY)
 
-from flask import Flask, render_template
+from flask import Flask, redirect, render_template, session
 app = Flask('TracAggr')
 
 from utils import dictify
@@ -31,7 +31,7 @@ DEVS = (
 
 # load local settings
 try:
-    from settings import TRAC_DATA, DEVS
+    from settings import TRAC_DATA, DEVS, SECRET_KEY
 except ImportError:
     print("Settings not found")
 
@@ -58,9 +58,14 @@ for trac in TRAC_DATA:
 # sort developer list
 DEVS.sort(cmp=lambda x,y: cmp(x[0], y[0]))
 
+def other_colour(colour):
+    return 'dark' if colour == 'light' else 'light'
+
 @app.route("/")
 def index():
     ''' Displays calendars and lists of open/recently closed tickets '''
+    stylesheet = session.get('css', 'light')
+    other_ssheet = other_colour(stylesheet)
     # prepare search string
     today = datetime.date.today()
     monthstr = today.strftime("%%.%m.%Y")
@@ -87,7 +92,18 @@ def index():
     return render_template('index.html', devs=DEVS,
                                          month_data=month_data,
                                          calendar=cal,
+                                         stylesheet=stylesheet,
+                                         other_ssheet=other_ssheet,
                                          daytmpl=monthstr.replace('%', '%02d'))
+
+@app.route("/toggle-css/")
+def toggle_css():
+    ''' Toggles dark stylesheet to light and vice versa '''
+    stylesheet = session.get('css', 'light')
+    session['css'] = other_colour(stylesheet)
+    return redirect('/')
+
+app.secret_key = SECRET_KEY
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
