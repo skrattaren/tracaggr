@@ -17,11 +17,18 @@
     </div>
     {% for name, login in devs %}
     <h3 id="{{ login }}">{{ name }}</h3>
-    <div class="cal">
-        {% for ticket in month_data.pop(login, []) %}
-        <p>{{ ticket.trac }}: {{ ticket.id }}</p>
+    <table class="cal">
+        {% for week in calendar %}
+        <tr>
+        {% for day in week %}
+            <td>{{ day or '' }}</td>
         {% endfor %}
-    </div>
+        </tr>
+        {% endfor %}
+        {# for ticket in month_data.pop(login, []) %}
+        <p>{{ ticket.trac }}: {{ ticket.id }}</p>
+        {% endfor #}
+    </table>
     <div class="tcktlist">
         Lists of open / recently closed tickets
     </div>

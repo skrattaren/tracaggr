@@ -12,3 +12,7 @@ a:hover {
     background-color: #ccc;
 }
 
+table, th, td {
+    border: 1px solid white;
+}
+

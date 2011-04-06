@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import calendar
 import datetime
 
 import psycopg2
@@ -58,7 +59,9 @@ def index():
     ''' Displays calendars and lists of open/recently closed tickets '''
     month_data = {}
     # prepare search string
-    todaystr = datetime.date.today().strftime("%%.%m.%Y")
+    today = datetime.date.today()
+    todaystr = today.strftime("%%.%m.%Y")
+
     month_data = {}
     for trac in TRACS:
         # query Trac databases
@@ -67,7 +70,13 @@ def index():
         month_data = dictify(cur.fetchall(), 'owner',
                              dict2up=month_data,
                              add_data={'trac': trac['name']})
-    return render_template('index.html', month_data=month_data, devs=DEVS)
+    # create calendars
+    month, year = (today.month, today.year)
+    calendar.setfirstweekday(calendar.MONDAY)
+    cal = calendar.monthcalendar(year, month)
+    return render_template('index.html', devs=DEVS,
+                                         month_data=month_data,
+                                         calendar=cal)
 
 if __name__ == "__main__":
     app.run(debug=True)
