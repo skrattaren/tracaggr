@@ -16,13 +16,20 @@
         {% endfor %}
     </div>
     {% for name, login in devs %}
+    {% set usertckts = month_data.pop(login, {}) %}
     <h3 id="{{ login }}">{{ name }}</h3>
     <table class="cal">
         {% for week in calendar %}
         <tr>
-        {% for day in week %}
-            <td>{{ day or '' }}</td>
-        {% endfor %}
+            {% for day in week %}
+            {% set daystr = daytmpl % day %}
+            <td>
+                {{ day or '' }}<br />
+                {% for ticket in usertckts.pop(daystr, ()) %}
+                    <p>{{ ticket.trac }}: {{ ticket.id }}</p>
+                {% endfor %}
+            </td>
+            {% endfor %}
         </tr>
         {% endfor %}
         {# for ticket in month_data.pop(login, []) %}

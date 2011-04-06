@@ -57,26 +57,28 @@ DEVS.sort(cmp=lambda x,y: cmp(x[0], y[0]))
 @app.route("/")
 def index():
     ''' Displays calendars and lists of open/recently closed tickets '''
-    month_data = {}
     # prepare search string
     today = datetime.date.today()
-    todaystr = today.strftime("%%.%m.%Y")
+    monthstr = today.strftime("%%.%m.%Y")
 
-    month_data = {}
+    month_data, month_data_raw = {}, {}
     for trac in TRACS:
         # query Trac databases
         cur = trac['conn'].cursor(cursor_factory=DictCursor)
-        cur.execute(QUERY_MONTH, (todaystr, ))
-        month_data = dictify(cur.fetchall(), 'owner',
-                             dict2up=month_data,
+        cur.execute(QUERY_MONTH, (monthstr, ))
+        month_data_raw = dictify(cur.fetchall(), 'owner',
+                             dict2up=month_data_raw,
                              add_data={'trac': trac['name']})
+    for user, tickets in month_data_raw.items():
+        month_data[user] = dictify(tickets, 'due_date')
     # create calendars
     month, year = (today.month, today.year)
     calendar.setfirstweekday(calendar.MONDAY)
     cal = calendar.monthcalendar(year, month)
     return render_template('index.html', devs=DEVS,
                                          month_data=month_data,
-                                         calendar=cal)
+                                         calendar=cal,
+                                         daytmpl=monthstr.replace('%', '%02d'))
 
 if __name__ == "__main__":
     app.run(debug=True)
