@@ -29,9 +29,12 @@ DEVS = (
         ('John Doe', 'johndoe'),
         )
 
+DEBUG_HOST = '127.0.0.1'
+
 # load local settings
 try:
-    from settings import TRAC_DATA, DEVS, SECRET_KEY
+    # SECRET_KEY should be `str` or `bytes` when unicode_literals are used
+    from settings import TRAC_DATA, DEVS, SECRET_KEY, DEBUG_HOST
 except ImportError:
     print("Settings not found")
 
@@ -106,4 +109,4 @@ def toggle_css():
 app.secret_key = SECRET_KEY
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host=DEBUG_HOST, debug=True)
