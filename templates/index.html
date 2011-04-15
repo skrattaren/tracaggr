@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="Content-Language" content="ru-ru" />
-    <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="/static/{{ stylesheet }}.css">
+    <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="/static/{{ stylesheet }}.css" />
 
     <title>Trac Aggregator</title>
 </head>
@@ -14,26 +14,30 @@
         <a href="/toggle-css/">{{ other_ssheet }}</a>
     </div>
     <div id="contents">
+        <span>Оглавление</span>
+        <ul>
         {% for name, login in devs %}
-        <p><a href="#{{ login }}">{{ name }}</a></p>
+        <li><a href="#{{ login }}">{{ name }}</a></li>
         {% endfor %}
+        </ul>
     </div>
     {% for name, login in devs %}
     {% set usertckts = month_data.pop(login, {}) %}
-    <h3 id="{{ login }}">{{ name }}</h3>
+    <h2 id="{{ login }}">{{ name }}</h2>
     <table class="cal">
         {% for week in calendar %}
         <tr>
             {% for day in week %}
             {% set daystr = daytmpl % day %}
             <td>
-                {{ day or '' }}<br />
+                <span class="day">{{ day or '' }}</span>
                 {% for trac, tickets in usertckts.pop(daystr, {}).items() %}
-                    {{ trac }}
+                    <span class="project_name">{{ trac }}</span>
                     {% for ticket in tickets %}
                     <p class="{{ ticket.status }}">
                     <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}">
-                            #{{ ticket.id }}: {{ ticket.summary }}</a>
+                        <span class="num">#{{ ticket.id }}</span>:
+                        {{ ticket.summary }}</a>
                     </p>
                     {% endfor %}
                 {% endfor %}
@@ -47,6 +51,9 @@
     </table>
     <div class="tcktlist">
         Lists of open / recently closed tickets
+    </div>
+    <div class="tothetop">
+        <a href="#contents">Вернуться к началу страницы ↑</a>
     </div>
     {% endfor %}
 </body>

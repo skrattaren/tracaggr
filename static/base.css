@@ -1,0 +1,195 @@
+@font-face {
+    font-family: 'UbuntuRegular';
+    src: url('/static/fonts/Ubuntu-Regular-webfont.eot');
+    src: url('/static/fonts/Ubuntu-Regular-webfont.eot?#iefix') format('eot'),
+         url('/static/fonts/Ubuntu-Regular-webfont.woff') format('woff'),
+         url('/static/fonts/Ubuntu-Regular-webfont.ttf') format('truetype'),
+         url('/static/fonts/Ubuntu-Regular-webfont.svg#webfontH8d6xzZk') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+html {
+    font-family: 'UbuntuRegular', Verdana, Arial, sans-serif;
+    color: #333333;
+    font-size: 80%;
+    font-weight: normal;
+    padding: 20px;
+    clear: both;
+}
+
+a {
+    color: #bb0000;
+    text-decoration: none;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none 
+}
+
+.cal {
+    border: 0px solid #CCCCCC;
+    width: 100%;
+    border-collapse:collapse;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+.cal th {
+    padding:2px;
+    font-size: 90%;
+    color: #CCCCCC;
+    font-weight: normal;
+}
+
+.cal th a {
+    color: #bb0000;
+}
+
+.cal td {
+    border: 1px solid #CCCCCC;
+    padding:15px;
+    width: 16%;
+    text-align: left;
+    vertical-align: top;
+}
+
+.cal td p {
+    padding: 0px;
+    margin: 0px;
+}
+
+.cal a,
+.tcktlist a,
+.tcktlistclose a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.cal a:link,
+.tcktlist a:link,
+.tcktlistclose a:link {
+    text-decoration: none;
+}
+
+.cal a:active,
+.tcktlist a:active,
+.tcktlistclose a:active {
+    text-decoration: none;
+}
+
+.cal a:hover,
+.tcktlist a:hover,
+.tcktlistclose a:hover {
+    text-decoration: underline;
+}
+
+.cal a:visited,
+.tcktlist a:visited,
+.tcktlistclose a:visited {
+    text-decoration: none;
+}
+
+.cal .day {
+    font-size: 150%;
+    color: #999999;
+    float: right;
+    position: relative;
+    top: -5px;
+    z-index: -1;
+    display: block;
+    right: -5px;
+}
+
+.num {
+    color: #bb0000;
+}
+
+.project_name {
+    font-style: italic;
+    color: #999999;
+}
+
+.closed, .closed a{
+    text-decoration: line-through;
+    color: #666666;
+}
+
+.tcktlist {
+    float: left;
+    width: 50%;
+}
+
+.tcktlistclose {
+    float: right;
+    width: 50%;
+}
+
+h2 {
+    padding-top: 30px;
+    padding-bottom: 3px;
+}
+
+#contents {
+    text-align: right;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+}
+
+#contents ul {
+    text-align: left;
+    display: none;
+    position: absolute;
+    top: 2px;
+    right: 0px;
+    background-color:#FFFFFF;
+    border: 1px solid #CCCCCC; 
+    padding: 30px;
+}
+
+#contents ul ul{
+    position: relative;
+    background-color: none;
+    border: 0;
+    padding: 10px;
+}
+
+#contents span {
+    border-bottom: 1px dashed;
+}
+
+#contents:hover ul {
+    display: block;
+}
+
+.tothetop {
+    clear: both;
+    padding-top: 20px;
+    text-align: right;
+    border-bottom-width: 1px;
+    border-bottom-style: dashed;
+    font-size: 80%;
+    border-bottom-color: #CCCCCC;
+}
+
+.tothetop a {
+    color: #CCCCCC;
+}
