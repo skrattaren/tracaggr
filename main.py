@@ -13,7 +13,7 @@ psycopg2.extensions.register_type(UNICODE)
 psycopg2.extensions.register_type(UNICODEARRAY)
 
 from flask import Flask, redirect, render_template, session
-app = Flask('TracAggr')
+app = Flask(__name__)
 
 from utils import dictify
 
@@ -110,3 +110,4 @@ app.secret_key = SECRET_KEY
 
 if __name__ == "__main__":
     app.run(host=DEBUG_HOST, debug=True)
+
