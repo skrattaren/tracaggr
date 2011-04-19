@@ -39,9 +39,9 @@ Quickstart
    and field name configurable is a TODO)
 4. Run
    ``$ python main.py``
-5. Deploy with uUWSGI_/mod_wsgi_
+5. Deploy with uWSGI_/mod_wsgi_
 
 .. _DateFieldPlugin: http://trac-hacks.org/wiki/DateFieldPlugin
-.. _uUWSGI: http://projects.unbit.it/uwsgi/
+.. _uWSGI: http://projects.unbit.it/uwsgi/
 .. _mod_wsgi: http://code.google.com/p/modwsgi/
 
