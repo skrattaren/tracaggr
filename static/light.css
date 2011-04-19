@@ -1,6 +1,63 @@
-@import url("/static/base.css");
+/* This stylesheet is included by courtesy of Maria Osipenko (Мария Осипенко),
+ * its original author */
 
-body {
+html {
+    color: #333333;
     background-color: #fff;
+}
+
+a {
+    color: #bb0000;
+}
+
+.cal {
+    border: 0px solid #cccccc;
+}
+
+.cal th {
+    color: #cccccc;
+}
+
+.cal th a {
+    color: #bb0000;
+}
+
+.cal td {
+    border: 1px solid #cccccc;
+}
+
+.cal a,
+.tcktlist a,
+.tcktlistclose a {
+    color: #000000;
+}
+
+.cal .day {
+    color: #999999;
+}
+
+.num {
+    color: #bb0000;
+}
+
+.project_name {
+    color: #999999;
+}
+
+.closed, .closed a {
+    color: #666666;
+}
+
+#contents ul {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+}
+
+.tothetop {
+    border-bottom-color: #cccccc;
+}
+
+.tothetop a {
+    color: #cccccc;
 }
 

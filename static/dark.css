@@ -1,4 +1,6 @@
-body {
+/* Dark stylesheet, based on the work of Maria Osipenko (Мария Осипенко) */
+
+html {
     color: #bbb;
     background-color: #333;
 }
@@ -8,15 +10,57 @@ a {
 }
 
 a:hover {
-    color: #777;
-    background-color: #ccc;
+    background-color: #444;
 }
 
-table, th, td {
-    border: 1px solid white;
+.cal {
+    border: 0px solid #ccc;
 }
 
-p.closed a {
-    text-decoration: line-through;
+.cal th {
+    color: #ccc;
+}
+
+.cal th a {
+    color: #bb0000;
+}
+
+.cal td {
+    border: 1px solid #fff;
+}
+
+.cal a,
+.tcktlist a,
+.tcktlistclose a {
+    color: #ccc;
+}
+
+.cal .day {
+    color: #999;
+}
+
+.num {
+    color: #bb5555;
+}
+
+.project_name {
+    color: #999;
+}
+
+.closed, .closed a {
+    color: #999;
+}
+
+#contents ul {
+    background-color: #333;
+    border: 1px solid #ccc;
+}
+
+.tothetop {
+    border-bottom-color: #ccc;
+}
+
+.tothetop a {
+    color: #ccc;
 }
 
