@@ -104,6 +104,7 @@ def toggle_css():
     ''' Toggles dark stylesheet to light and vice versa '''
     stylesheet = session.get('css', 'light')
     session['css'] = other_colour(stylesheet)
+    session.permanent = True
     return redirect('/')
 
 app.secret_key = SECRET_KEY
