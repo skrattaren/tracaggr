@@ -32,8 +32,8 @@ Requirements
 Quickstart
 ----------
 1. Create ``settings.py`` for storing your settings. Use ``unicode_literals``
-2. Define ``TRAC_DATA, DEVS, SECRET_KEY, DEBUG_HOST`` variables there.
-   See ``main.py`` file for syntax and samples
+2. Define ``TRAC_DATA, DEVS, SECRET_KEY`` (and optionally``DEBUG_HOST``)
+   variables there. See ``defaults.py`` file for syntax and samples
 3. Tickets are expected to have custom field ``due_date`` with date in format
    "``%d.%m.%Y``" there (DateFieldPlugin_ suggested; yes, making date format
    and field name configurable is a TODO)
