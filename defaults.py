@@ -20,7 +20,12 @@ DEVS = (
         ('John Doe', 'johndoe'),
         )
 
+# interface where development/debug server would run
 DEBUG_HOST = '127.0.0.1'
+# name of field in Trac database where dates are stored
+DATE_FIELD = 'due_date'
+# format of that filed
+DATEFORMAT = '%d.%m.%Y'
 
 # load mandatory settings
 try:
@@ -31,7 +36,7 @@ except ImportError:
 
 # load optional settings
 try:
-    from settings import DEBUG_HOST
+    from settings import *
 except ImportError:
     pass
 
@@ -42,8 +47,9 @@ QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
                         ticket.status, ticket_custom.value AS due_date
                 FROM ticket INNER JOIN ticket_custom
                 ON ticket.id = ticket_custom.ticket
-                WHERE ticket_custom.name='due_date' AND
-                    ticket_custom.value ILIKE %s"""
+                WHERE ticket_custom.name='{0}' AND
+                    ticket_custom.value ILIKE %s""".format(DATE_FIELD)
+
 # query to fetch tickets close not earlier than a week ago
 QUERY_CLSD_WEEK = "SELECT id, owner FROM ticket WHERE status='closed'"
 
@@ -56,7 +62,8 @@ for trac in TRAC_DATA:
     TRACS[-1]['conn'].set_client_encoding('utf-8')
 
 # remove not to import them
-del trac, TRAC_DATA
+del trac, TRAC_DATA, DATE_FIELD
+del ISOLATION_LEVEL_AUTOCOMMIT, UNICODE, UNICODEARRAY, DictCursor
 
 # sort developer list
 DEVS.sort(cmp=lambda x,y: cmp(x[0], y[0]))

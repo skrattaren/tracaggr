@@ -21,7 +21,7 @@ def index():
     other_ssheet = other_colour(stylesheet)
     # prepare search string
     today = datetime.date.today()
-    monthstr = today.strftime("%%.%m.%Y")
+    monthstr = today.strftime(DATEFORMAT.replace('%d', '%%'))
 
     month_data, month_data_raw = {}, {}
     for trac in TRACS:
