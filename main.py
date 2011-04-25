@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import calendar
 import datetime
 
+from psycopg2.extras import DictCursor
 from flask import Flask, redirect, render_template, session
 app = Flask(__name__)
 

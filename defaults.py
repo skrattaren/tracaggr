@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT, UNICODE, UNICODEARRAY
-from psycopg2.extras import DictCursor
 
 psycopg2.extensions.register_type(UNICODE)
 psycopg2.extensions.register_type(UNICODEARRAY)
@@ -63,7 +62,7 @@ for trac in TRAC_DATA:
 
 # remove not to import them
 del trac, TRAC_DATA, DATE_FIELD
-del ISOLATION_LEVEL_AUTOCOMMIT, UNICODE, UNICODEARRAY, DictCursor
+del ISOLATION_LEVEL_AUTOCOMMIT, UNICODE, UNICODEARRAY
 
 # sort developer list
 DEVS.sort(cmp=lambda x,y: cmp(x[0], y[0]))
