@@ -91,13 +91,15 @@ def index():
     # create calendars
     month, year = (today.month, today.year)
     calendar.setfirstweekday(calendar.MONDAY)
-    cal = calendar.monthcalendar(year, month)
-    return render_template('index.html', devs=DEVS,
-                                         month_data=month_data,
-                                         calendar=cal,
-                                         stylesheet=stylesheet,
-                                         other_ssheet=other_ssheet,
-                                         daytmpl=monthstr.replace('%', '%02d'))
+    context = {
+               'devs': DEVS,
+               'month_data': month_data,
+               'calendar': calendar.monthcalendar(year, month),
+               'stylesheet': stylesheet,
+               'other_ssheet': other_ssheet,
+               'daytmpl': monthstr.replace('%', '%02d')
+               }
+    return render_template('index.html', **context)
 
 @app.route("/toggle-css/")
 def toggle_css():
