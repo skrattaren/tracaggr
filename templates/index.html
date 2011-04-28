@@ -26,6 +26,9 @@
     {% set usertckts = month_data.pop(login, {}) %}
     <h2 id="{{ login }}">{{ name }}</h2>
     <table class="cal">
+        <tr>
+            {% for wday in weekhdr %}<th>{{ wday }}</th>{% endfor %}
+        </tr>
         {% for week in calendar %}
         <tr>
             {% for day in week %}

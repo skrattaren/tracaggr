@@ -95,6 +95,7 @@ def index():
                'devs': DEVS,
                'month_data': month_data,
                'calendar': calendar.monthcalendar(year, month),
+               'weekhdr': calendar.weekheader(3).split(' '),
                'stylesheet': stylesheet,
                'other_ssheet': other_ssheet,
                'daytmpl': monthstr.replace('%', '%02d')
