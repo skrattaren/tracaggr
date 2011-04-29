@@ -33,7 +33,7 @@
         <tr>
             {% for day in week %}
             {% set daystr = daytmpl % day %}
-            <td>
+            <td{%if loop.index > 5 %} class="holiday"{% endif %}>
                 <span class="day">{{ day or '' }}</span>
                 {% for trac, tickets in usertckts.pop(daystr, {}).items() %}
                     <span class="project_name">{{ trac }}</span>

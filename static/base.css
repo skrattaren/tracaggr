@@ -107,7 +107,6 @@ ul {
     float: right;
     position: relative;
     top: -5px;
-    z-index: -1;
     display: block;
     right: -5px;
 }
@@ -140,6 +139,7 @@ h2 {
     margin: 0px;
     padding: 0px;
     position: relative;
+    z-index: 1;
 }
 
 #contents ul {
