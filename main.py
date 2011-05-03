@@ -6,7 +6,7 @@ import calendar
 import datetime
 
 from psycopg2.extras import DictCursor
-from flask import Flask, redirect, render_template, session
+from flask import Flask, abort, redirect, render_template, session
 app = Flask(__name__)
 
 from defaults import *
@@ -16,13 +16,26 @@ def other_colour(colour):
     return 'dark' if colour == 'light' else 'light'
 
 @app.route("/")
-def index():
+@app.route('/<int:month>/')
+@app.route('/<int:month>/<int:year>/')
+def index(month=None, year=None):
     ''' Displays calendars and lists of open/recently closed tickets '''
     stylesheet = session.get('css', 'light')
     other_ssheet = other_colour(stylesheet)
-    # prepare search string
-    today = datetime.date.today()
-    monthstr = today.strftime(DATEFORMAT.replace('%d', '%%'))
+    # prepare search string, with today as default
+    basedate = datetime.date.today()
+    replace_dict = {'day': 1}
+    if month is not None:
+        replace_dict['month'] = month
+    if year is not None:
+        replace_dict['year'] = year
+    try:
+        basedate = basedate.replace(**replace_dict)
+    except ValueError:
+        #TODO: prettify 404, add info
+        abort(404)
+    del replace_dict
+    monthstr = basedate.strftime("%%.%m.%Y")
 
     month_data, month_data_raw = {}, {}
     for trac in TRACS:
@@ -40,8 +53,9 @@ def index():
             month_data[user][due_date] = dictify(tickets, 'trac')
 
     # create calendars
-    month, year = (today.month, today.year)
     calendar.setfirstweekday(calendar.MONDAY)
+    cal_year = year
+    month, year = (basedate.month, basedate.year)
     context = {
                'devs': DEVS,
                'month_data': month_data,
@@ -49,7 +63,10 @@ def index():
                'weekhdr': calendar.weekheader(3).split(' '),
                'stylesheet': stylesheet,
                'other_ssheet': other_ssheet,
-               'daytmpl': monthstr.replace('%', '%02d')
+               'daytmpl': monthstr.replace('%', '%02d'),
+               'month_name': calendar.month_name[month],
+               'month': month,
+               'year': cal_year,
                }
     return render_template('index.html', **context)
 

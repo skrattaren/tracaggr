@@ -25,6 +25,11 @@
     {% for name, login in devs %}
     {% set usertckts = month_data.pop(login, {}) %}
     <h2 id="{{ login }}">{{ name }}</h2>
+    <h3>
+        <a href="/{{ '%02d' | format(month - 1) }}/">◄</a>
+        {{ month_name }}
+        <a href="/{{ '%02d' | format(month + 1) }}/">►</a>
+    </h3>
     <table class="cal">
         <tr>
             {% for wday in weekhdr %}<th>{{ wday }}</th>{% endfor %}
@@ -49,6 +54,9 @@
             {% endfor %}
         </tr>
         {% endfor %}
+        {# for ticket in month_data.pop(login, []) %}
+        <p>{{ ticket.trac }}: {{ ticket.id }}</p>
+        {% endfor #}
     </table>
     <div class="tcktlist">
         Lists of open / recently closed tickets
