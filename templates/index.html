@@ -26,9 +26,9 @@
     {% set usertckts = month_data.pop(login, {}) %}
     <h2 id="{{ login }}">{{ name }}</h2>
     <h3>
-        <a href="/{{ '%02d' | format(month - 1) }}/">◄</a>
+        <a href="/{{ '%02d' | format(month - 1) }}/#{{ login }}">◄</a>
         {{ month_name }}
-        <a href="/{{ '%02d' | format(month + 1) }}/">►</a>
+        <a href="/{{ '%02d' | format(month + 1) }}/#{{ login }}">►</a>
     </h3>
     <table class="cal">
         <tr>
