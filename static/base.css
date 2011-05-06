@@ -73,32 +73,32 @@ ul {
 }
 
 .cal a,
-.tcktlist a,
-.tcktlistclose a {
+.openedlist a,
+.clsdlist a {
     text-decoration: none;
 }
 
 .cal a:link,
-.tcktlist a:link,
-.tcktlistclose a:link {
+.openedlist a:link,
+.clsdlist a:link {
     text-decoration: none;
 }
 
 .cal a:active,
-.tcktlist a:active,
-.tcktlistclose a:active {
+.openedlist a:active,
+.clsdlist a:active {
     text-decoration: none;
 }
 
 .cal a:hover,
-.tcktlist a:hover,
-.tcktlistclose a:hover {
+.openedlist a:hover,
+.clsdlist a:hover {
     text-decoration: underline;
 }
 
 .cal a:visited,
-.tcktlist a:visited,
-.tcktlistclose a:visited {
+.openedlist a:visited,
+.clsdlist a:visited {
     text-decoration: none;
 }
 
@@ -119,12 +119,12 @@ ul {
     text-decoration: line-through;
 }
 
-.tcktlist {
+.openedlist {
     float: left;
     width: 50%;
 }
 
-.tcktlistclose {
+.clsdlist {
     float: right;
     width: 50%;
 }

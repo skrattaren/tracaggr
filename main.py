@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import calendar
 import datetime
+import time
 
 from psycopg2.extras import DictCursor
 from flask import Flask, abort, redirect, render_template, session
@@ -52,6 +53,12 @@ def index(month=None, year=None):
         opened = dictify(cur.fetchall(), 'owner',
                              add_data={'trac': trac['name'],
                                        'base_url': trac['base_url']})
+        # for recently closed tickets
+        week_ago = (time.time() - 604800) * (10**6)   # (7 * 24 * 60 * 60) = 604800
+        cur.execute(QUERY_CLSD_WEEK, (week_ago, ))
+        closed = dictify(cur.fetchall(), 'owner',
+                             add_data={'trac': trac['name'],
+                                       'base_url': trac['base_url']})
     # total dictification of month data
     for user, tickets in month_data_raw.items():
         month_data[user] = dictify(tickets, 'due_date')
@@ -61,6 +68,10 @@ def index(month=None, year=None):
     # a wee bit of simple dictification for opened tickets
     for user, tickets in opened.items():
         opened[user] = dictify(tickets, 'trac')
+
+    # ...and for closed ones
+    for user, tickets in closed.items():
+        closed[user] = dictify(tickets, 'trac')
 
     # create calendars
     calendar.setfirstweekday(calendar.MONDAY)
@@ -78,6 +89,7 @@ def index(month=None, year=None):
                'month': month,
                'year': cal_year,
                'opened': opened,
+               'closed': closed,
                }
     return render_template('index.html', **context)
 

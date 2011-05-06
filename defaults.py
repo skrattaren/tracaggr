@@ -40,7 +40,7 @@ except ImportError:
     pass
 
 # query to fetch open tickets
-QUERY_OPEN = """SELECT id, owner,summary FROM ticket WHERE status!='closed'"""
+QUERY_OPEN = "SELECT id, owner, summary FROM ticket WHERE status!='closed'"
 # query to fetch month data
 QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
                         ticket.status, ticket_custom.value AS due_date
@@ -50,7 +50,8 @@ QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
                     ticket_custom.value ILIKE %s""".format(DATE_FIELD)
 
 # query to fetch tickets close not earlier than a week ago
-QUERY_CLSD_WEEK = "SELECT id, owner FROM ticket WHERE status='closed'"
+QUERY_CLSD_WEEK = """SELECT id, owner, summary FROM ticket WHERE status='closed'
+                     AND changetime > %s"""
 
 # prepare dictionary of DB connections
 TRACS = []

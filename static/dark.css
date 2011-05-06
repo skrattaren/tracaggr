@@ -30,8 +30,8 @@ a:hover {
 }
 
 .cal a,
-.tcktlist a,
-.tcktlistclose a {
+.openedlist a,
+.clsdlist a {
     color: #ccc;
 }
 

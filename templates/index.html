@@ -55,8 +55,22 @@
         </tr>
         {% endfor %}
     </table>
-    <div class="tcktlist">
+    <div class="openedlist">
         {% for trac, tickets in opened.pop(login, {}).items() %}
+            <span class="project_name">{{ trac }}</span>
+            <ul>
+            {% for ticket in tickets %}
+                <li>
+                    <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}">
+                        <span class="num">#{{ ticket.id }}</span>:
+                        {{ ticket.summary }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+    <div class="clsdlist">
+        {% for trac, tickets in closed.pop(login, {}).items() %}
             <span class="project_name">{{ trac }}</span>
             <ul>
             {% for ticket in tickets %}

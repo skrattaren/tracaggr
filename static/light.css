@@ -27,8 +27,8 @@ a {
 }
 
 .cal a,
-.tcktlist a,
-.tcktlistclose a {
+.openedlist a,
+.clsdlist a {
     color: #000000;
 }
 
