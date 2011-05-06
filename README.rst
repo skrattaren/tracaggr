@@ -14,6 +14,8 @@ bound to days.
 
 Thanks to Maria Osipenko (Мария Осипенко) for CSS work
 
+The work is released under the GPLv3 license (see ``LICENSE`` file).
+
 .. _WikiTicketCalendarMacro: http://trac-hacks.org/wiki/WikiTicketCalendarMacro
 .. _Trac: http://trac.edgewall.com/
 .. _PostgreSQL: http://www.postgresql.org/
