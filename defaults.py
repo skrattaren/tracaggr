@@ -40,7 +40,7 @@ except ImportError:
     pass
 
 # query to fetch open tickets
-QUERY_OPEN = "SELECT id, owner FROM ticket WHERE status!='closed'"
+QUERY_OPEN = """SELECT id, owner,summary FROM ticket WHERE status!='closed'"""
 # query to fetch month data
 QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
                         ticket.status, ticket_custom.value AS due_date

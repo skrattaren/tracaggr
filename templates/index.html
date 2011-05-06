@@ -56,7 +56,15 @@
         {% endfor %}
     </table>
     <div class="tcktlist">
-        Lists of open / recently closed tickets
+        {% for trac, tickets in opened.pop(login, {}).items() %}
+            <span class="project_name">{{ trac }}</span>
+            <ul>
+            {% for ticket in tickets %}
+                <li><span class="num">#{{ ticket.id }}</span>:
+                                      {{ ticket.summary }}</a></li>
+            {% endfor %}
+            </ul>
+        {% endfor %}
     </div>
     <div class="tothetop">
         <a href="#contents">Вернуться к началу страницы ↑</a>

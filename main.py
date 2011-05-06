@@ -39,18 +39,28 @@ def index(month=None, year=None):
 
     month_data, month_data_raw = {}, {}
     for trac in TRACS:
-        # query Trac databases
+        ## query Trac databases
+        # for month data
         cur = trac['conn'].cursor(cursor_factory=DictCursor)
         cur.execute(QUERY_MONTH, (monthstr, ))
         month_data_raw = dictify(cur.fetchall(), 'owner',
                              dict2up=month_data_raw,
                              add_data={'trac': trac['name'],
                                        'base_url': trac['base_url']})
+        # for open tickets
+        cur.execute(QUERY_OPEN)
+        opened = dictify(cur.fetchall(), 'owner',
+                             add_data={'trac': trac['name'],
+                                       'base_url': trac['base_url']})
+    # total dictification of month data
     for user, tickets in month_data_raw.items():
         month_data[user] = dictify(tickets, 'due_date')
         for due_date in month_data[user].keys():
             tickets = month_data[user].pop(due_date)
             month_data[user][due_date] = dictify(tickets, 'trac')
+    # a wee bit of simple dictification for opened tickets
+    for user, tickets in opened.items():
+        opened[user] = dictify(tickets, 'trac')
 
     # create calendars
     calendar.setfirstweekday(calendar.MONDAY)
@@ -67,6 +77,7 @@ def index(month=None, year=None):
                'month_name': calendar.month_name[month],
                'month': month,
                'year': cal_year,
+               'opened': opened,
                }
     return render_template('index.html', **context)
 
