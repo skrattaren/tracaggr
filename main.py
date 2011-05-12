@@ -38,7 +38,7 @@ def index(month=None, year=None):
     del replace_dict
     monthstr = basedate.strftime("%%.%m.%Y")
 
-    month_data, month_data_raw = {}, {}
+    month_data, month_data_raw, opened, closed = ({}, ) * 4
     for trac in TRACS:
         ## query Trac databases
         # for month data
@@ -51,12 +51,14 @@ def index(month=None, year=None):
         # for open tickets
         cur.execute(QUERY_OPEN)
         opened = dictify(cur.fetchall(), 'owner',
+                             dict2up=opened,
                              add_data={'trac': trac['name'],
                                        'base_url': trac['base_url']})
         # for recently closed tickets
         week_ago = (time.time() - 604800) * (10**6)   # (7 * 24 * 60 * 60) = 604800
         cur.execute(QUERY_CLSD_WEEK, (week_ago, ))
         closed = dictify(cur.fetchall(), 'owner',
+                             dict2up=closed,
                              add_data={'trac': trac['name'],
                                        'base_url': trac['base_url']})
     # total dictification of month data
