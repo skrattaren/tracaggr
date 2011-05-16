@@ -39,6 +39,10 @@ a:hover {
     color: #999;
 }
 
+.today {
+    background-color: #444;
+}
+
 .holiday {
     background-color: #272727;
 }

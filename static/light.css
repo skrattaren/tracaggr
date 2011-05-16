@@ -36,6 +36,10 @@ a {
     color: #999999;
 }
 
+.today {
+    background-color: #fbbfbf;
+}
+
 .holiday {
     background-color: #eee;
 }

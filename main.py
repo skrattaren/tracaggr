@@ -24,6 +24,7 @@ def index(month=None, year=None):
     stylesheet = session.get('css', 'light')
     other_ssheet = other_colour(stylesheet)
     # prepare search string, with today as default
+    today = datetime.date.today()
     basedate = datetime.date.today()
     replace_dict = {'day': 1}
     if month is not None:
@@ -35,6 +36,10 @@ def index(month=None, year=None):
     except ValueError:
         #TODO: prettify 404, add info
         abort(404)
+    if today.month == basedate.month and today.year == basedate.year:
+        today = today.day
+    else:
+        today = None
     del replace_dict
     monthstr = basedate.strftime("%%.%m.%Y")
 
@@ -90,6 +95,7 @@ def index(month=None, year=None):
                'month_name': calendar.month_name[month],
                'month': month,
                'year': cal_year,
+               'today': today,
                'opened': opened,
                'closed': closed,
                }
