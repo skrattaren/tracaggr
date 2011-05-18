@@ -43,6 +43,12 @@ def index(month=None, year=None):
     del replace_dict
     monthstr = basedate.strftime("%%.%m.%Y")
 
+    # calculate timestamp boundaries of the month
+    clsd_after = calendar.timegm(
+                      (basedate.year, basedate.month, 1) + (0,) * 3) * (10**6)
+    clsd_before = calendar.timegm(
+                      (basedate.year, basedate.month + 1, 1) + (0,) * 3) * (10**6)
+
     month_data, month_data_raw, opened, closed = ({}, ) * 4
     for trac in TRACS:
         ## query Trac databases
@@ -53,6 +59,23 @@ def index(month=None, year=None):
                              dict2up=month_data_raw,
                              add_data={'trac': trac['name'],
                                        'base_url': trac['base_url']})
+        # query for due_date'less tickets closed on this month
+        cur.execute(QUERY_UNSET_DATE, (clsd_after, clsd_before))
+        for tckt in cur.fetchall():
+            # add ticket to corresponding list of owner's tickets
+            owner = tckt['owner']
+            # convert timestamp-like ticket.time to `due_date`
+            due_date = datetime.date.fromtimestamp(tckt['closed_at'] // (10**6))
+            due_date = due_date.strftime(DATEFORMAT)
+            user_tckt_list = month_data_raw.get(owner, [])
+            user_tckt_list.append({'id': tckt['id'],
+                                   'due_date': due_date,
+                                   'summary': tckt['summary'],
+                                   'status': 'closed',
+                                   'trac': trac['name'],
+                                   'base_url': trac['base_url']})
+            month_data_raw['owner'] = user_tckt_list
+
         # for open tickets
         cur.execute(QUERY_OPEN)
         opened = dictify(cur.fetchall(), 'owner',
@@ -66,12 +89,14 @@ def index(month=None, year=None):
                              dict2up=closed,
                              add_data={'trac': trac['name'],
                                        'base_url': trac['base_url']})
+
     # total dictification of month data
     for user, tickets in month_data_raw.items():
         month_data[user] = dictify(tickets, 'due_date')
         for due_date in month_data[user].keys():
             tickets = month_data[user].pop(due_date)
             month_data[user][due_date] = dictify(tickets, 'trac')
+
     # a wee bit of simple dictification for opened tickets
     for user, tickets in opened.items():
         opened[user] = dictify(tickets, 'trac')

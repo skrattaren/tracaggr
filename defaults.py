@@ -39,9 +39,7 @@ try:
 except ImportError:
     pass
 
-# query to fetch open tickets
-QUERY_OPEN = "SELECT id, owner, summary FROM ticket WHERE status!='closed'"
-# query to fetch month data
+# query to fetch month data (with DATE_FIELD set)
 QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
                         ticket.status, ticket_custom.value AS due_date
                 FROM ticket INNER JOIN ticket_custom
@@ -49,6 +47,23 @@ QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
                 WHERE ticket_custom.name='{0}' AND
                     ticket_custom.value ILIKE %s""".format(DATE_FIELD)
 
+# query to fetch tickets closed this month without DATE_FIELD set
+##TODO: strip reopened
+QUERY_UNSET_DATE = """SELECT ticket.id, ticket.owner, ticket.summary,
+                            ticket_change.time AS closed_at
+                        FROM ticket INNER JOIN ticket_change
+                            ON ticket.id = ticket_change.ticket
+                        INNER JOIN ticket_custom
+                            ON ticket.id = ticket_custom.ticket
+                        WHERE ticket_change.field='status' AND
+                            ticket_change.newvalue='closed' AND
+                            ticket_custom.name='{0}' AND
+                            ticket_custom.value='' AND
+                            ticket_change.time>=%s AND
+                            ticket_change.time<=%s""".format(DATE_FIELD)
+
+# query to fetch open tickets
+QUERY_OPEN = "SELECT id, owner, summary FROM ticket WHERE status!='closed'"
 # query to fetch tickets close not earlier than a week ago
 QUERY_CLSD_WEEK = """SELECT id, owner, summary FROM ticket WHERE status='closed'
                      AND changetime > %s"""
