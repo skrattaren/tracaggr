@@ -41,7 +41,7 @@ def index(month=None, year=None):
     else:
         today = None
     del replace_dict
-    monthstr = basedate.strftime("%%.%m.%Y")
+    monthstr = basedate.strftime(DATEFORMAT.replace("%d", "%%"))
 
     # calculate timestamp boundaries of the month
     clsd_after = calendar.timegm(
