@@ -48,8 +48,8 @@ QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
                     ticket_custom.value ILIKE %s""".format(DATE_FIELD)
 
 # query to fetch tickets closed this month without DATE_FIELD set
-##TODO: strip reopened
-QUERY_UNSET_DATE = """SELECT ticket.id, ticket.owner, ticket.summary,
+QUERY_UNSET_DATE = """SELECT DISTINCT ON (ticket.id)
+                            ticket.id, ticket.owner, ticket.summary,
                             ticket_change.time AS closed_at
                         FROM ticket INNER JOIN ticket_change
                             ON ticket.id = ticket_change.ticket
@@ -60,7 +60,9 @@ QUERY_UNSET_DATE = """SELECT ticket.id, ticket.owner, ticket.summary,
                             ticket_custom.name='{0}' AND
                             ticket_custom.value='' AND
                             ticket_change.time>=%s AND
-                            ticket_change.time<=%s""".format(DATE_FIELD)
+                            ticket_change.time<=%s
+                        ORDER BY ticket.id, ticket_change.time DESC;
+                    """.format(DATE_FIELD)
 
 # query to fetch open tickets
 QUERY_OPEN = "SELECT id, owner, summary FROM ticket WHERE status!='closed'"
