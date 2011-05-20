@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from datetime import date
+from settings import DEVS
+
 def dictify(dicts, key, dict2up={}, add_data={}):
     ''' Rearranges iterable of dictionaries to dictionary of lists
     ({'key': val1, 'otherkey': otherval1, ...},
@@ -22,6 +25,14 @@ def dictify(dicts, key, dict2up={}, add_data={}):
         d.update(add_data)
         result[value].append(d)
     return result
+
+def get_tckt_title(tckt_dict):
+    ''' Composes title for ticket '''
+    created_on = tckt_dict['time']
+    created_on = date.fromtimestamp(created_on // (10**6))
+    reporter = DEVS.get(tckt_dict['reporter'], tckt_dict['reporter'])
+    return '{0} ({1})'.format(reporter, created_on.strftime("%d.%m.%Y"))
+
 
 if __name__ == "__main__":
     test = ({'key': 'val1', 'otherkey': 'otherval1'},

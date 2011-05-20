@@ -15,9 +15,9 @@ TRAC_DATA = (
 )
 
 # list of developers
-DEVS = (
-        ('John Doe', 'johndoe'),
-        )
+DEVS = {
+        'johndoe': 'John Doe',
+        }
 
 # interface where development/debug server would run
 DEBUG_HOST = '127.0.0.1'
@@ -39,9 +39,13 @@ try:
 except ImportError:
     pass
 
+DEVLIST = DEVS.items()
+DEVLIST.sort(cmp=lambda x,y: cmp(x[1], y[1]))
+
 # query to fetch month data (with DATE_FIELD set)
-QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary, ticket.reporter,
-                        ticket.status, ticket_custom.value AS due_date
+QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
+                        ticket.reporter, ticket.status, ticket.time,
+                        ticket_custom.value AS due_date
                 FROM ticket INNER JOIN ticket_custom
                 ON ticket.id = ticket_custom.ticket
                 WHERE ticket_custom.name='{0}' AND
@@ -49,7 +53,7 @@ QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary, ticket.reporter
 
 # query to fetch tickets closed this month without DATE_FIELD set
 QUERY_UNSET_DATE = """SELECT DISTINCT ON (ticket.id)
-                            ticket.id, ticket.owner,
+                            ticket.id, ticket.owner, ticket.time,
                             ticket.summary, ticket.reporter,
                             ticket_change.time AS closed_at
                         FROM ticket INNER JOIN ticket_change
@@ -66,10 +70,10 @@ QUERY_UNSET_DATE = """SELECT DISTINCT ON (ticket.id)
                     """.format(DATE_FIELD)
 
 # query to fetch open tickets
-QUERY_OPEN = """SELECT id, owner, summary, reporter
+QUERY_OPEN = """SELECT id, owner, summary, reporter, time
                 FROM ticket WHERE status!='closed'"""
 # query to fetch tickets close not earlier than a week ago
-QUERY_CLSD_WEEK = """SELECT id, owner, summary,reporter FROM ticket
+QUERY_CLSD_WEEK = """SELECT id, owner, summary,reporter, time FROM ticket
                      WHERE status='closed' AND changetime>%s"""
 
 # prepare dictionary of DB connections
@@ -83,7 +87,3 @@ for trac in TRAC_DATA:
 # remove not to import them
 del trac, TRAC_DATA, DATE_FIELD
 del ISOLATION_LEVEL_AUTOCOMMIT, UNICODE, UNICODEARRAY
-
-# sort developer list
-DEVS.sort(cmp=lambda x,y: cmp(x[0], y[0]))
-

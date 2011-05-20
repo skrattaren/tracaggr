@@ -17,12 +17,12 @@
     <div id="contents">
         <span>Оглавление</span>
         <ul>
-        {% for name, login in devs %}
+        {% for login, name in devs %}
         <li><a href="#{{ login }}">{{ name }}</a></li>
         {% endfor %}
         </ul>
     </div>
-    {% for name, login in devs %}
+    {% for login, name in devs %}
     {% set usertckts = month_data.pop(login, {}) %}
     <h2 id="{{ login }}">{{ name }}</h2>
     <h3>
@@ -47,7 +47,7 @@
                     {% for ticket in tickets %}
                     <p class="{{ ticket.status }}">
                     <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}"
-                       title="{{ devdict.get(ticket.reporter, ticket.reporter) }}">
+                        title="{{ ticket.title }}">
                         <span class="num">#{{ ticket.id }}</span>:
                         {{ ticket.summary }}</a>
                     </p>
@@ -66,7 +66,7 @@
             {% for ticket in tickets %}
                 <li>
                 <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}"
-                   title="{{ devdict.get(ticket.reporter, ticket.reporter) }}">
+                   title="{{ ticket.title }}">
                         <span class="num">#{{ ticket.id }}</span>:
                         {{ ticket.summary }}</a>
                 </li>
@@ -82,7 +82,7 @@
             {% for ticket in tickets %}
                 <li>
                     <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}"
-                       title="{{ devdict.get(ticket.reporter, ticket.reporter) }}">
+                        title="{{ ticket.title }}">
                         <span class="num">#{{ ticket.id }}</span>:
                         {{ ticket.summary }}</a>
                 </li>

@@ -11,13 +11,7 @@ from flask import Flask, abort, redirect, render_template, session
 app = Flask(__name__)
 
 from defaults import *
-from utils import dictify
-
-# prepare dictionary of DEVS: {login: name}
-DEVDICT = {}
-for dev in DEVS:
-    DEVDICT[dev[1]] = dev[0]
-del dev
+from utils import dictify, get_tckt_title
 
 def other_colour(colour):
     return 'dark' if colour == 'light' else 'light'
@@ -77,6 +71,8 @@ def index(month=None, year=None):
             user_tckt_list.append({'id': tckt['id'],
                                    'due_date': due_date,
                                    'summary': tckt['summary'],
+                                   'time': tckt['time'],
+                                   'reporter': tckt['reporter'],
                                    'status': 'closed',
                                    'trac': trac['name'],
                                    'base_url': trac['base_url']})
@@ -98,6 +94,9 @@ def index(month=None, year=None):
 
     # total dictification of month data
     for user, tickets in month_data_raw.items():
+        for ticket in tickets:
+            ##TODO: do it within utils.dictify (pass function in add_data)
+            ticket['title'] = get_tckt_title(ticket)
         month_data[user] = dictify(tickets, 'due_date')
         for due_date in month_data[user].keys():
             tickets = month_data[user].pop(due_date)
@@ -116,8 +115,8 @@ def index(month=None, year=None):
     cal_year = year
     month, year = (basedate.month, basedate.year)
     context = {
-               'devs': DEVS,
-               'devdict': DEVDICT,
+               'devs': DEVLIST,
+               'devlist': DEVS,
                'month_data': month_data,
                'calendar': calendar.monthcalendar(year, month),
                'weekhdr': calendar.weekheader(3).split(' '),
