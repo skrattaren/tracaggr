@@ -13,6 +13,12 @@ app = Flask(__name__)
 from defaults import *
 from utils import dictify
 
+# prepare dictionary of DEVS: {login: name}
+DEVDICT = {}
+for dev in DEVS:
+    DEVDICT[dev[1]] = dev[0]
+del dev
+
 def other_colour(colour):
     return 'dark' if colour == 'light' else 'light'
 
@@ -111,6 +117,7 @@ def index(month=None, year=None):
     month, year = (basedate.month, basedate.year)
     context = {
                'devs': DEVS,
+               'devdict': DEVDICT,
                'month_data': month_data,
                'calendar': calendar.monthcalendar(year, month),
                'weekhdr': calendar.weekheader(3).split(' '),

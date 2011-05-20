@@ -46,7 +46,8 @@
                     <span class="project_name">{{ trac }}</span>
                     {% for ticket in tickets %}
                     <p class="{{ ticket.status }}">
-                    <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}">
+                    <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}"
+                       title="{{ devdict.get(ticket.reporter, ticket.reporter) }}">
                         <span class="num">#{{ ticket.id }}</span>:
                         {{ ticket.summary }}</a>
                     </p>
@@ -64,7 +65,8 @@
             <ul>
             {% for ticket in tickets %}
                 <li>
-                    <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}">
+                <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}"
+                   title="{{ devdict.get(ticket.reporter, ticket.reporter) }}">
                         <span class="num">#{{ ticket.id }}</span>:
                         {{ ticket.summary }}</a>
                 </li>
@@ -79,7 +81,8 @@
             <ul>
             {% for ticket in tickets %}
                 <li>
-                    <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}">
+                    <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}"
+                       title="{{ devdict.get(ticket.reporter, ticket.reporter) }}">
                         <span class="num">#{{ ticket.id }}</span>:
                         {{ ticket.summary }}</a>
                 </li>

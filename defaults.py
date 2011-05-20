@@ -40,7 +40,7 @@ except ImportError:
     pass
 
 # query to fetch month data (with DATE_FIELD set)
-QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
+QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary, ticket.reporter,
                         ticket.status, ticket_custom.value AS due_date
                 FROM ticket INNER JOIN ticket_custom
                 ON ticket.id = ticket_custom.ticket
@@ -49,7 +49,8 @@ QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
 
 # query to fetch tickets closed this month without DATE_FIELD set
 QUERY_UNSET_DATE = """SELECT DISTINCT ON (ticket.id)
-                            ticket.id, ticket.owner, ticket.summary,
+                            ticket.id, ticket.owner,
+                            ticket.summary, ticket.reporter,
                             ticket_change.time AS closed_at
                         FROM ticket INNER JOIN ticket_change
                             ON ticket.id = ticket_change.ticket
@@ -65,10 +66,11 @@ QUERY_UNSET_DATE = """SELECT DISTINCT ON (ticket.id)
                     """.format(DATE_FIELD)
 
 # query to fetch open tickets
-QUERY_OPEN = "SELECT id, owner, summary FROM ticket WHERE status!='closed'"
+QUERY_OPEN = """SELECT id, owner, summary, reporter
+                FROM ticket WHERE status!='closed'"""
 # query to fetch tickets close not earlier than a week ago
-QUERY_CLSD_WEEK = """SELECT id, owner, summary FROM ticket WHERE status='closed'
-                     AND changetime > %s"""
+QUERY_CLSD_WEEK = """SELECT id, owner, summary,reporter FROM ticket
+                     WHERE status='closed' AND changetime>%s"""
 
 # prepare dictionary of DB connections
 TRACS = []
