@@ -43,15 +43,24 @@ def index(month=None, year=None):
     del replace_dict
     monthstr = basedate.strftime(DATEFORMAT.replace("%d", "%%"))
 
+    # determine next month/year if they are somewhat special
+    next_month = basedate.month + 1
+    prev_month = basedate.month - 1
+    next_year, prev_year = '', ''
+
+    if basedate.month == 12:
+        next_month = 1
+        next_year = basedate.year + 1
+    elif basedate.month == 1:
+        prev_month = 12
+        prev_year = basedate.year - 1
+
     # calculate timestamp boundaries of the month
     clsd_after = calendar.timegm(
                       (basedate.year, basedate.month, 1) + (0,) * 3) * (10**6)
-    if basedate.month == 12:
-        clsd_before = calendar.timegm(
-                      (basedate.year + 1, 1, 1) + (0,) * 3) * (10**6)
-    else:
-        clsd_before = calendar.timegm(
-                      (basedate.year, basedate.month + 1, 1) + (0,) * 3) * (10**6)
+    clsd_before = calendar.timegm(
+                      (next_year or basedate.year, next_month, 1) + (0,) * 3
+                                 ) * (10**6)
 
     month_data, month_data_raw, opened, closed = ({}, ) * 4
     for trac in TRACS:
@@ -122,6 +131,10 @@ def index(month=None, year=None):
                'devs': DEVLIST,
                'devlist': DEVS,
                'month_data': month_data,
+               'next_month': next_month,
+               'next_year': next_year,
+               'prev_month': prev_month,
+               'prev_year': prev_year,
                'calendar': calendar.monthcalendar(year, month),
                'weekhdr': calendar.weekheader(3).split(' '),
                'stylesheet': stylesheet,
