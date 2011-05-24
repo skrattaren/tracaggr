@@ -33,7 +33,6 @@ def get_tckt_title(tckt_dict):
     reporter = DEVS.get(tckt_dict['reporter'], tckt_dict['reporter'])
     return '{0} ({1})'.format(reporter, created_on.strftime("%d.%m.%Y"))
 
-
 if __name__ == "__main__":
     test = ({'key': 'val1', 'otherkey': 'otherval1'},
             {'key': 'val2', 'otherkey': 'otherval2'},

@@ -46,7 +46,11 @@ def index(month=None, year=None):
     # calculate timestamp boundaries of the month
     clsd_after = calendar.timegm(
                       (basedate.year, basedate.month, 1) + (0,) * 3) * (10**6)
-    clsd_before = calendar.timegm(
+    if basedate.month == 12:
+        clsd_before = calendar.timegm(
+                      (basedate.year + 1, 1, 1) + (0,) * 3) * (10**6)
+    else:
+        clsd_before = calendar.timegm(
                       (basedate.year, basedate.month + 1, 1) + (0,) * 3) * (10**6)
 
     month_data, month_data_raw, opened, closed = ({}, ) * 4
