@@ -64,11 +64,12 @@
             <span class="project_name">{{ trac }}</span>
             <ul>
             {% for ticket in tickets %}
-                <li>
+            <li{% if ticket.delayed_by %} class="delayed"{% endif %}>
                 <a href="{{ ticket.base_url }}/ticket/{{ ticket.id }}"
                    title="{{ ticket.title }}">
                         <span class="num">#{{ ticket.id }}</span>:
                         {{ ticket.summary }}</a>
+                    <span class="delay">{{ ticket.delayed_by }}</span>
                 </li>
             {% endfor %}
             </ul>

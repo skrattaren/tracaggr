@@ -37,9 +37,9 @@ def index(month=None, year=None):
         #TODO: prettify 404, add info
         abort(404)
     if today.month == basedate.month and today.year == basedate.year:
-        today = today.day
+        today_day = today.day
     else:
-        today = None
+        today_day = None
     del replace_dict
     monthstr = basedate.strftime(DATEFORMAT.replace("%d", "%%"))
 
@@ -117,6 +117,19 @@ def index(month=None, year=None):
 
     # a wee bit of simple dictification for opened tickets
     for user, tickets in opened.items():
+        for ticket in tickets:
+            ##TODO: do it within utils.dictify (pass function in add_data)
+            if not ticket['first_due_date']:
+                continue
+            first_due_date = time.strptime(ticket['first_due_date'], DATEFORMAT)
+            first_due_date = datetime.date(first_due_date.tm_year,
+                                           first_due_date.tm_mon,
+                                           first_due_date.tm_mday)
+            delay = today - first_due_date
+            if delay.days > 0:
+                ticket['delayed_by'] = str(delay.days)
+            else:
+                ticket['delayed_by'] = ''
         opened[user] = dictify(tickets, 'trac')
 
     # ...and for closed ones
@@ -143,7 +156,7 @@ def index(month=None, year=None):
                'month_name': calendar.month_name[month],
                'month': month,
                'year': cal_year,
-               'today': today,
+               'today': today_day,
                'opened': opened,
                'closed': closed,
                }

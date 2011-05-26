@@ -180,3 +180,11 @@ h3 {
     font-size: 80%;
 }
 
+.delayed .delay:before {
+    content: '['
+}
+
+.delayed .delay:after {
+    content: ']'
+}
+
