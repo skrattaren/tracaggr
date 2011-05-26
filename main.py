@@ -138,16 +138,15 @@ def index(month=None, year=None):
 
     # create calendars
     calendar.setfirstweekday(calendar.MONDAY)
-    cal_year = year
     month, year = (basedate.month, basedate.year)
     context = {
                'devs': DEVLIST,
                'devlist': DEVS,
                'month_data': month_data,
                'next_month': next_month,
-               'next_year': next_year,
+               'next_year': next_year if next_year != today.year else "",
                'prev_month': prev_month,
-               'prev_year': prev_year,
+               'prev_year': prev_year if prev_year != today.year else "",
                'calendar': calendar.monthcalendar(year, month),
                'weekhdr': calendar.weekheader(3).split(' '),
                'stylesheet': stylesheet,
@@ -155,7 +154,7 @@ def index(month=None, year=None):
                'daytmpl': monthstr.replace('%', '%02d'),
                'month_name': calendar.month_name[month],
                'month': month,
-               'year': cal_year,
+               'year': year if year != today.year else "",
                'today': today_day,
                'opened': opened,
                'closed': closed,
