@@ -69,9 +69,21 @@ QUERY_UNSET_DATE = """SELECT DISTINCT ON (ticket.id)
                         ORDER BY ticket.id, ticket_change.time DESC;
                     """.format(DATE_FIELD)
 
-# query to fetch open tickets
-QUERY_OPEN = """SELECT id, owner, summary, reporter, time
-                FROM ticket WHERE status!='closed'"""
+# query to fetch open tickets and first due_date ever assigned to them
+QUERY_OPEN = """SELECT DISTINCT ON (ticket.id) id, owner, summary, reporter, ticket.time,
+                       COALESCE(ticket_change.oldvalue, ticket_custom.value, '')
+                                AS first_due_date
+                FROM ticket
+                    LEFT JOIN ticket_custom ON
+                        (ticket.id=ticket_custom.ticket AND
+                         ticket_custom.name='{0}')
+                    LEFT JOIN ticket_change ON
+                        (ticket.id = ticket_change.ticket AND
+                         ticket_change.field='{0}' AND
+                         ticket_change.oldvalue!='')
+                WHERE ticket.status!='closed'
+                ORDER BY ticket.id, ticket_change.time ASC
+                """.format(DATE_FIELD)
 # query to fetch tickets close not earlier than a week ago
 QUERY_CLSD_WEEK = """SELECT id, owner, summary,reporter, time FROM ticket
                      WHERE status='closed' AND changetime>%s"""
