@@ -88,7 +88,7 @@ QUERY_OPEN = """SELECT DISTINCT ON (ticket.id) id, owner, summary, reporter, tic
 QUERY_CLSD_WEEK = """SELECT id, owner, summary,reporter, time FROM ticket
                      WHERE status='closed' AND changetime>%s"""
 
-# prepare dictionary of DB connections
+# prepare list of Tracs with database connections
 TRACS = []
 for trac in TRAC_DATA:
     TRACS.append({'name': trac.pop('name'), 'base_url': trac.pop('base_url'),
