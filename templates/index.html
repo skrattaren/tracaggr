@@ -24,7 +24,7 @@
     </div>
     {% for login, name in devs %}
     {% set usertckts = month_data.pop(login, {}) %}
-    <h2 id="{{ login }}">{{ name }}</h2>
+    <h2 id="{{ login }}">{{ name }}<a class="anchor" href="#{{ login }}">¶</a></h2>
     <h3>
         <a href="/{{ '%02d' | format(prev_month) }}/{{ prev_year }}#{{ login }}">◄</a>
         {{ month_name }} {{ year }}

@@ -188,3 +188,11 @@ h3 {
     content: ']'
 }
 
+a.anchor {
+    visibility: hidden;
+}
+
+h2:hover a.anchor {
+    visibility: visible;
+}
+
