@@ -181,11 +181,11 @@ h3 {
 }
 
 .delayed .delay:before {
-    content: '['
+    content: '[';
 }
 
 .delayed .delay:after {
-    content: ']'
+    content: ']';
 }
 
 a.anchor {
