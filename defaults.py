@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 
 import psycopg2
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT, UNICODE, UNICODEARRAY
+from psycopg2.extensions import (ISOLATION_LEVEL_AUTOCOMMIT, UNICODE,
+                                 UNICODEARRAY)
 
 psycopg2.extensions.register_type(UNICODE)
 psycopg2.extensions.register_type(UNICODEARRAY)
@@ -40,7 +41,7 @@ except ImportError:
     pass
 
 DEVLIST = DEVS.items()
-DEVLIST.sort(cmp=lambda x,y: cmp(x[1], y[1]))
+DEVLIST.sort(cmp=lambda x, y: cmp(x[1], y[1]))
 
 # query to fetch month data (with DATE_FIELD set)
 QUERY_MONTH = """SELECT ticket.id, ticket.owner, ticket.summary,
@@ -70,8 +71,9 @@ QUERY_UNSET_DATE = """SELECT DISTINCT ON (ticket.id)
                     """.format(DATE_FIELD)
 
 # query to fetch open tickets and first due_date ever assigned to them
-QUERY_OPEN = """SELECT DISTINCT ON (ticket.id) id, owner, summary, reporter, ticket.time,
-                       COALESCE(ticket_change.oldvalue, ticket_custom.value, '')
+QUERY_OPEN = """SELECT DISTINCT ON (ticket.id) id, owner, summary,
+                   reporter, ticket.time,
+                   COALESCE(ticket_change.oldvalue, ticket_custom.value, '')
                                 AS first_due_date
                 FROM ticket
                     LEFT JOIN ticket_custom ON

@@ -13,8 +13,10 @@ app = Flask(__name__)
 from defaults import *
 from utils import dictify, get_tckt_title
 
+
 def other_colour(colour):
     return 'dark' if colour == 'light' else 'light'
+
 
 @app.route("/")
 @app.route('/<int:month>/')
@@ -57,10 +59,11 @@ def index(month=None, year=None):
 
     # calculate timestamp boundaries of the month
     clsd_after = calendar.timegm(
-                      (basedate.year, basedate.month, 1) + (0,) * 3) * (10**6)
+                    (basedate.year, basedate.month, 1) + (0,) * 3
+                                ) * (10 ** 6)
     clsd_before = calendar.timegm(
                       (next_year or basedate.year, next_month, 1) + (0,) * 3
-                                 ) * (10**6)
+                                ) * (10 ** 6)
 
     month_data, month_data_raw, opened, closed = ({}, ) * 4
     for trac in TRACS:
@@ -78,7 +81,8 @@ def index(month=None, year=None):
             # add ticket to corresponding list of owner's tickets
             owner = tckt['owner']
             # convert timestamp-like ticket.time to `due_date`
-            due_date = datetime.date.fromtimestamp(tckt['closed_at'] // (10**6))
+            due_date = datetime.date.fromtimestamp(tckt['closed_at']
+                                        // (10 ** 6))
             due_date = due_date.strftime(DATEFORMAT)
             user_tckt_list = month_data_raw.get(owner, [])
             user_tckt_list.append({'id': tckt['id'],
@@ -98,7 +102,8 @@ def index(month=None, year=None):
                              add_data={'trac': trac['name'],
                                        'base_url': trac['base_url']})
         # for recently closed tickets
-        week_ago = (time.time() - 604800) * (10**6)   # (7 * 24 * 60 * 60) = 604800
+        # (7 * 24 * 60 * 60) = 604800
+        week_ago = (time.time() - 604800) * (10 ** 6)
         cur.execute(QUERY_CLSD_WEEK, (week_ago, ))
         closed = dictify(cur.fetchall(), 'owner',
                              dict2up=closed,
@@ -121,7 +126,8 @@ def index(month=None, year=None):
             ##TODO: do it within utils.dictify (pass function in add_data)
             if not ticket['first_due_date']:
                 continue
-            first_due_date = time.strptime(ticket['first_due_date'], DATEFORMAT)
+            first_due_date = time.strptime(ticket['first_due_date'],
+                                           DATEFORMAT)
             first_due_date = datetime.date(first_due_date.tm_year,
                                            first_due_date.tm_mon,
                                            first_due_date.tm_mday)
@@ -161,6 +167,7 @@ def index(month=None, year=None):
                }
     return render_template('index.html', **context)
 
+
 @app.route("/toggle-css/")
 def toggle_css():
     ''' Toggles dark stylesheet to light and vice versa '''
@@ -173,4 +180,3 @@ app.secret_key = SECRET_KEY
 
 if __name__ == "__main__":
     app.run(host=DEBUG_HOST, debug=True)
-
