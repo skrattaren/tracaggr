@@ -95,6 +95,10 @@ def index(month=None, year=None):
                                    'base_url': trac['base_url']})
             month_data_raw['owner'] = user_tckt_list
 
+        # don't query for opened/closed tickets for non-current month
+        if today_day is None:
+            continue
+
         # for open tickets
         cur.execute(QUERY_OPEN)
         opened = dictify(cur.fetchall(), 'owner',
@@ -120,27 +124,30 @@ def index(month=None, year=None):
             tickets = month_data[user].pop(due_date)
             month_data[user][due_date] = dictify(tickets, 'trac')
 
+    # don't query for opened/closed tickets for non-current month
+    # TODO: too much indentation
+    if today_day is not None:
     # a wee bit of simple dictification for opened tickets
-    for user, tickets in opened.items():
-        for ticket in tickets:
-            ##TODO: do it within utils.dictify (pass function in add_data)
-            if not ticket['first_due_date']:
-                continue
-            first_due_date = time.strptime(ticket['first_due_date'],
-                                           DATEFORMAT)
-            first_due_date = datetime.date(first_due_date.tm_year,
-                                           first_due_date.tm_mon,
-                                           first_due_date.tm_mday)
-            delay = today - first_due_date
-            if delay.days > 0:
-                ticket['delayed_by'] = str(delay.days)
-            else:
-                ticket['delayed_by'] = ''
-        opened[user] = dictify(tickets, 'trac')
+        for user, tickets in opened.items():
+            for ticket in tickets:
+                ##TODO: do it within utils.dictify (pass function in add_data)
+                if not ticket['first_due_date']:
+                    continue
+                first_due_date = time.strptime(ticket['first_due_date'],
+                                               DATEFORMAT)
+                first_due_date = datetime.date(first_due_date.tm_year,
+                                               first_due_date.tm_mon,
+                                               first_due_date.tm_mday)
+                delay = today - first_due_date
+                if delay.days > 0:
+                    ticket['delayed_by'] = str(delay.days)
+                else:
+                    ticket['delayed_by'] = ''
+            opened[user] = dictify(tickets, 'trac')
 
-    # ...and for closed ones
-    for user, tickets in closed.items():
-        closed[user] = dictify(tickets, 'trac')
+        # ...and for closed ones
+        for user, tickets in closed.items():
+            closed[user] = dictify(tickets, 'trac')
 
     # create calendars
     calendar.setfirstweekday(calendar.MONDAY)

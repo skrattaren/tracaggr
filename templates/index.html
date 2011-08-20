@@ -58,6 +58,7 @@
         </tr>
         {% endfor %}
     </table>
+    {% if today %}
     <div class="openedlist">
         <h4>Opened tickets</h4>
         {% for trac, tickets in opened.pop(login, {}).items() %}
@@ -91,6 +92,7 @@
             </ul>
         {% endfor %}
     </div>
+    {% endif %}
     <div class="tothetop">
         <a href="#contents">Back to the top</a>
     </div>
