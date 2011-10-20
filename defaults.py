@@ -24,7 +24,7 @@ DEVS = {
 DEBUG_HOST = '127.0.0.1'
 # name of field in Trac database where dates are stored
 DATE_FIELD = 'due_date'
-# format of that filed
+# format of that field
 DATEFORMAT = '%d.%m.%Y'
 
 # load mandatory settings
@@ -86,7 +86,7 @@ QUERY_OPEN = """SELECT DISTINCT ON (ticket.id) id, owner, summary,
                 WHERE ticket.status!='closed'
                 ORDER BY ticket.id, ticket_change.time ASC
                 """.format(DATE_FIELD)
-# query to fetch tickets close not earlier than a week ago
+# query to fetch tickets closed not earlier than a week ago
 QUERY_CLSD_WEEK = """SELECT id, owner, summary,reporter, time FROM ticket
                      WHERE status='closed' AND changetime>%s"""
 
