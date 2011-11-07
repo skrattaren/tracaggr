@@ -73,12 +73,17 @@ QUERY_UNSET_DATE = """SELECT DISTINCT ON (ticket.id)
 # query to fetch open tickets and first due_date ever assigned to them
 QUERY_OPEN = """SELECT DISTINCT ON (ticket.id) id, owner, summary,
                    reporter, ticket.time,
-                   COALESCE(ticket_change.oldvalue, ticket_custom.value, '')
-                                AS first_due_date
+                   CASE
+                       WHEN ticket_custom.value IS NULL THEN ''
+                       ELSE COALESCE(ticket_change.oldvalue,
+                                     ticket_custom.value, '')
+                       END
+                       AS first_due_date
                 FROM ticket
                     LEFT JOIN ticket_custom ON
                         (ticket.id=ticket_custom.ticket AND
-                         ticket_custom.name='{0}')
+                         ticket_custom.name='{0}' AND
+                         ticket_custom.value!='')
                     LEFT JOIN ticket_change ON
                         (ticket.id = ticket_change.ticket AND
                          ticket_change.field='{0}' AND
