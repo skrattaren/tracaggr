@@ -48,7 +48,7 @@ def index(month=None, year=None):
     # determine next month/year if they are somewhat special
     next_month = basedate.month + 1
     prev_month = basedate.month - 1
-    next_year, prev_year = '', ''
+    next_year, prev_year = (basedate.year, ) * 2
 
     if basedate.month == 12:
         next_month = 1
