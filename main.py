@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import calendar
 import datetime
+import itertools
 import time
 
 from psycopg2.extras import DictCursor
@@ -152,6 +153,17 @@ def index(month=None, year=None):
     # create calendars
     calendar.setfirstweekday(calendar.MONDAY)
     month, year = (basedate.month, basedate.year)
+    week_cal = calendar.monthcalendar(year, month)
+    # keep HTML classes for calendar cells
+    day_classes = {}
+    # 5th and 6th elements are holidays, zeroes should be dropped
+    for holiday in filter(None,
+                          itertools.chain(*[week[5:] for week in week_cal])):
+        day_classes[holiday] = ['holiday']
+    # today has its special HTML class
+    if today_day:
+        day_classes.setdefault(today_day, []).append('today')
+
     context = {
                'devs': DEVLIST,
                'devlist': DEVS,
@@ -160,7 +172,7 @@ def index(month=None, year=None):
                'next_year': next_year if next_year != today.year else "",
                'prev_month': prev_month,
                'prev_year': prev_year if prev_year != today.year else "",
-               'calendar': calendar.monthcalendar(year, month),
+               'calendar': week_cal,
                'weekhdr': calendar.weekheader(3).split(' '),
                'stylesheet': stylesheet,
                'other_ssheet': other_ssheet,
@@ -168,7 +180,7 @@ def index(month=None, year=None):
                'month_name': calendar.month_name[month],
                'month': month,
                'year': year if year != today.year else "",
-               'today': today_day,
+               'day_classes': day_classes,
                'opened': opened,
                'closed': closed,
                }
