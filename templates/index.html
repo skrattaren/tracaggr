@@ -56,7 +56,7 @@
         </tr>
         {% endfor %}
     </table>
-    {% if today %}
+    {% if opened or closed %}
     <div class="openedlist">
         <h4>Opened tickets</h4>
         {% for trac, tickets in opened.pop(login, {}).items() %}
