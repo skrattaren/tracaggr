@@ -164,6 +164,9 @@ def index(month=None, year=None):
     if today_day:
         day_classes.setdefault(today_day, []).append('today')
 
+    for day, class_list in day_classes.items():
+        day_classes[day] = ' '.join(class_list)
+
     context = {
                'devs': DEVLIST,
                'devlist': DEVS,

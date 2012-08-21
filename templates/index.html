@@ -38,7 +38,7 @@
         <tr>
             {% for day in week %}
             {% set daystr = daytmpl % day %}
-            <td class="{{ day_classes[day] | join(' ') }}">
+            <td class="{{ day_classes[day] }}">
                 <span class="day">{{ day or '' }}</span>
                 {% for trac, tickets in usertckts.pop(daystr, {}).items() %}
                     <span class="project_name">{{ trac }}</span>
