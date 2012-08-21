@@ -35,6 +35,20 @@ def get_tckt_title(tckt_dict):
     reporter = DEVS.get(tckt_dict['reporter'], tckt_dict['reporter'])
     return '{0} ({1})'.format(reporter, created_on.strftime("%d.%m.%Y"))
 
+
+def concatenate_dict(listdict):
+    ''' Concatenates values in dictionary of list of strings
+
+    {'key': ['val1', 'val2', ...], ...}
+     ->
+    {'key': 'val1 val2 ...', ...}
+
+    Used for determining list of HTML classes
+    '''
+    for key, val_list in listdict.items():
+        listdict[key] = ' '.join(val_list)
+    return listdict
+
 if __name__ == "__main__":
     test = ({'key': 'val1', 'otherkey': 'otherval1'},
             {'key': 'val2', 'otherkey': 'otherval2'},

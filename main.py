@@ -12,7 +12,7 @@ from flask import Flask, abort, redirect, render_template, session
 app = Flask(__name__)
 
 from defaults import *
-from utils import dictify, get_tckt_title
+from utils import concatenate_dict, dictify, get_tckt_title
 
 
 def other_colour(colour):
@@ -164,9 +164,6 @@ def index(month=None, year=None):
     if today_day:
         day_classes.setdefault(today_day, []).append('today')
 
-    for day, class_list in day_classes.items():
-        day_classes[day] = ' '.join(class_list)
-
     context = {
                'devs': DEVLIST,
                'devlist': DEVS,
@@ -183,7 +180,7 @@ def index(month=None, year=None):
                'month_name': calendar.month_name[month],
                'month': month,
                'year': year if year != today.year else "",
-               'day_classes': day_classes,
+               'day_classes': concatenate_dict(day_classes),
                'opened': opened,
                'closed': closed,
                }
