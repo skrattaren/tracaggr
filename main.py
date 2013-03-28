@@ -8,7 +8,8 @@ import itertools
 import time
 
 from psycopg2.extras import DictCursor
-from flask import Flask, abort, redirect, render_template, session
+from flask import (Flask, abort, redirect, render_template, request, session,
+                   url_for)
 app = Flask(__name__)
 
 from defaults import *
@@ -193,7 +194,8 @@ def toggle_css():
     stylesheet = session.get('css', 'light')
     session['css'] = other_colour(stylesheet)
     session.permanent = True
-    return redirect('/')
+    redirect_url = request.referrer or url_for('index')
+    return redirect(redirect_url)
 
 app.secret_key = SECRET_KEY
 
