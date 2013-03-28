@@ -2,7 +2,7 @@
 TracAggregator documentation
 ====================================
 
-:Author: Stjujsckij Nickolaj
+:Author: Nikolaj Sjujskij (Николай Шуйский)
 
 Description
 -----------
